@@ -293,7 +293,7 @@ public class PostActivity extends AppCompatActivity {
                         Intent homeintent = new Intent(PostActivity.this, HomeActivity.class);
                         homeintent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         startActivity(homeintent);
-                        Toast.makeText(PostActivity.this,"Inable to Upload Files...",Toast.LENGTH_LONG).show();
+                        Toast.makeText(PostActivity.this,"Unable to Upload Files...",Toast.LENGTH_LONG).show();
                     }
                 }) );
             }

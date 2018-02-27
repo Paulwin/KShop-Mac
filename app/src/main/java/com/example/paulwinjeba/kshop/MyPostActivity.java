@@ -3,77 +3,56 @@ package com.example.paulwinjeba.kshop;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.net.ConnectivityManager;
-import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.squareup.picasso.Picasso;
 
-public class HomeActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+public class MyPostActivity extends AppCompatActivity
+        implements NavigationView.OnNavigationItemSelectedListener{
 
-    private RecyclerView PostList;
-
-    boolean isOnline;
     FirebaseAuth mAuth;
     private DatabaseReference databaseReference;
 
-    Button login,signin;
+    private RecyclerView MyPostList;
 
+    Button login,signin;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_home);
+        setContentView(R.layout.activity_my_post);
 
         databaseReference = FirebaseDatabase.getInstance().getReference().child("Post");
         mAuth = FirebaseAuth.getInstance();
 
-        //String display = String.valueOf(mAuth.getCurrentUser());
-
-        PostList = (RecyclerView) findViewById(R.id.post_list);
-        PostList.setHasFixedSize(true);
-        PostList.setLayoutManager(new LinearLayoutManager(this));
+        MyPostList = (RecyclerView) findViewById(R.id.my_post);
+        MyPostList.setHasFixedSize(true);
+        MyPostList.setLayoutManager(new LinearLayoutManager(this));
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-        final ConnectivityManager connectivityManager = ((ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE));
-        isOnline = (connectivityManager.getActiveNetworkInfo() != null && connectivityManager.getActiveNetworkInfo().isConnected() && connectivityManager.getActiveNetworkInfo().isAvailable());
-
-
-        /*FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });*/
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -84,67 +63,43 @@ public class HomeActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        try {
-            if (!isOnline)
-            {
-                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
-                alertDialogBuilder.setTitle("No Internet");
-                alertDialogBuilder.setMessage("Please check your Internet Connection and try again.");
-                alertDialogBuilder.setPositiveButton("Reload",new DialogInterface.OnClickListener(){
-                    @Override
-                    public void onClick(DialogInterface dialog, int arg1) {
-                        Toast.makeText(HomeActivity.this,"Reconnecting",Toast.LENGTH_LONG).show();
-                    }
-                });
-
-                alertDialogBuilder.setNegativeButton("Cancel",new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        finish();
-                    }
-                });
-
-                AlertDialog alertDialog = alertDialogBuilder.create();
-                alertDialog.show();
-            }
-        }catch (Exception e)
-        {
-            e.printStackTrace();
-        }
-        finally {
-
-        }
     }
+
 
     @Override
     protected void onStart(){
         super.onStart();
-        FirebaseRecyclerAdapter<Blog, BlogViewHolder> firebaseRecyclerAdapter = new FirebaseRecyclerAdapter<Blog, BlogViewHolder>(
-                Blog.class,
-                R.layout.post_row,
-                BlogViewHolder.class,
+        FirebaseRecyclerAdapter<MyBlog, MyPostActivity.MyBlogViewHolder> my_firebaseRecyclerAdapter = new FirebaseRecyclerAdapter<MyBlog, MyPostActivity.MyBlogViewHolder>(
+                MyBlog.class,
+                R.layout.my_post,
+                MyPostActivity.MyBlogViewHolder.class,
                 databaseReference
         ) {
             @Override
-            protected void populateViewHolder(BlogViewHolder viewHolder, Blog model, int position) {
+            protected void populateViewHolder(MyPostActivity.MyBlogViewHolder viewHolder, MyBlog model, int position) {
 
                 viewHolder.setTitle(model.getTitle());
                 viewHolder.setPrice(model.getPrice());
                 viewHolder.setImage(getApplicationContext(),model.getImage());
+                viewHolder.setCategory(model.getCategory());
+                viewHolder.setDescription_1(model.getDescription_1());
+                viewHolder.setDescription_2(model.getDescription_2());
             }
         };
 
-        PostList.setAdapter(firebaseRecyclerAdapter);
+        MyPostList.setAdapter(my_firebaseRecyclerAdapter);
 
     }
 
-    public static class BlogViewHolder extends RecyclerView.ViewHolder{
+    public static class MyBlogViewHolder extends RecyclerView.ViewHolder{
 
         View mView;
+        Button edit,delete;
 
-        public BlogViewHolder(View itemView) {
-                super(itemView);
-                mView = itemView;
+        public MyBlogViewHolder(View itemView) {
+            super(itemView);
+            mView = itemView;
+            edit = (Button) findViewById(R.id.edit);
         }
 
         public void setTitle(String Title){
@@ -157,13 +112,30 @@ public class HomeActivity extends AppCompatActivity
             post_price.setText(Price);
         }
 
-        public void setImage(Context ctx,String Image){
+        public void setCategory(String Category){
+            TextView post_category = (TextView) mView.findViewById(R.id.show_category);
+            post_category.setText(Category);
+        }
+
+        public void setDescription_1(String Description_1){
+            TextView post_desc_1 = (TextView) mView.findViewById(R.id.show_description1);
+            post_desc_1.setText(Description_1);
+        }
+
+        public void setDescription_2(String Description_2){
+            TextView post_desc_2 = (TextView) mView.findViewById(R.id.show_description2);
+            post_desc_2.setText(Description_2);
+        }
+
+        public void setImage(Context ctx, String Image){
             ImageView post_image = (ImageView) mView.findViewById(R.id.post_image);
             Picasso.with(ctx.getApplicationContext()).load(Image).into(post_image);
             //Glide.with(HomeActivity.this).load(Image).dontAnimate().into(post_image);
             //Picasso.with(ctx.getApplicationContext()).load(Image).into(post_image);
         }
     }
+
+
 
     @Override
     public void onBackPressed() {
@@ -207,7 +179,7 @@ public class HomeActivity extends AppCompatActivity
 
         if (id == R.id.electronics) {
             // Handle the electronics action
-            final Intent electronic = new Intent(HomeActivity.this,ElectronicsActivity.class);
+            final Intent electronic = new Intent(MyPostActivity.this,ElectronicsActivity.class);
             startActivity(electronic);
         } else if (id == R.id.clothes) {
             /*final Intent upload = new Intent(ClothesActivity.this,PostActivity.class);
@@ -228,7 +200,7 @@ public class HomeActivity extends AppCompatActivity
         } else if (id == R.id.upload) {
             if (mAuth.getCurrentUser() != null) {
                 // User is logged in
-                final Intent upload = new Intent(HomeActivity.this,PostActivity.class);
+                final Intent upload = new Intent(MyPostActivity.this,PostActivity.class);
                 startActivity(upload);
             }
             else
@@ -237,7 +209,7 @@ public class HomeActivity extends AppCompatActivity
                     LayoutInflater inflater = getLayoutInflater();
                     View alertLayout;
                     alertLayout = inflater.inflate(R.layout.activity_inflater, null);
-                    AlertDialog.Builder alert = new AlertDialog.Builder(HomeActivity.this);
+                    AlertDialog.Builder alert = new AlertDialog.Builder(MyPostActivity.this);
                     //Set the button id
                     login = (Button) alertLayout.findViewById(R.id.log_in);
                     signin = (Button) alertLayout.findViewById(R.id.sign_in);
@@ -250,7 +222,7 @@ public class HomeActivity extends AppCompatActivity
                     login.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
-                            Intent nxtlogin = new Intent(HomeActivity.this, PostLoginActivity.class);
+                            Intent nxtlogin = new Intent(MyPostActivity.this, PostLoginActivity.class);
                             Log.d("login", "testing");
                             startActivity(nxtlogin);
                         }
@@ -260,7 +232,7 @@ public class HomeActivity extends AppCompatActivity
                         @Override
                         public void onClick(View view) {
                             Log.d("sign in checking", "tested");
-                            final Intent nxtsignin = new Intent(HomeActivity.this, PostSigninActivity.class);
+                            final Intent nxtsignin = new Intent(MyPostActivity.this, PostSigninActivity.class);
                             startActivity(nxtsignin);
                         }
                     });
@@ -288,9 +260,9 @@ public class HomeActivity extends AppCompatActivity
 
             //End user session
             FirebaseAuth.getInstance().signOut();
-            Intent homeagain = new Intent(HomeActivity.this, FirstpageActivity.class);
+            Intent homeagain = new Intent(MyPostActivity.this, FirstpageActivity.class);
             homeagain.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            Toast.makeText(HomeActivity.this,"Logged Out Successfully",Toast.LENGTH_LONG).show();
+            Toast.makeText(MyPostActivity.this,"Logged Out Successfully",Toast.LENGTH_LONG).show();
             startActivity(homeagain);
 
         }else if (id == R.id.sett) {
