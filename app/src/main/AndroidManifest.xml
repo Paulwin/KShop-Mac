@@ -48,7 +48,11 @@
             android:name=".SignupActivity"
             android:theme="@style/AppTheme" />
         <activity android:name=".ElectronicsActivity" />
-        <activity android:name=".MyPostActivity"></activity>
+        <activity android:name=".MyPostActivity" />
+        <activity android:name=".ClothesActivity" />
+        <activity android:name=".BikesActivity" />
+        <activity android:name=".BooksActivity" />
+        <activity android:name=".MiscellaneousActivity"></activity>
     </application>
 
 </manifest>

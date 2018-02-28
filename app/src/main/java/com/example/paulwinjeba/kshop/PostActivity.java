@@ -255,11 +255,223 @@ public class PostActivity extends AppCompatActivity {
         try {
 
             final String title = post_title.getText().toString().trim();
-
             final String price = post_price.getText().toString().trim();
             final String category = spinner_category;
 
-            if (!TextUtils.isEmpty(title) && !TextUtils.isEmpty(price) && !TextUtils.isEmpty(category) && imageUri != null) {
+            if (category.equals("Electronics")) {
+                final String description_1 = company_name.getText().toString().trim();
+                final String description_2 = device_specification.getText().toString().trim();
+
+                mProgress.show();
+
+                StorageReference filepath = storageReference.child("Post_Images").child(imageUri.getLastPathSegment());
+
+                filepath.putFile(imageUri).
+                        addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                            @Override
+                            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                                Uri downloadUrl = taskSnapshot.getDownloadUrl();
+
+                                DatabaseReference newPost = databaseReference.child("Electronics").push();
+
+                                newPost.child("Title").setValue(title);
+                                newPost.child("Image").setValue(downloadUrl.toString());
+                                newPost.child("Category").setValue(category);
+                                newPost.child("Description_1").setValue(description_1);
+                                newPost.child("Description_2").setValue(description_2);
+                                newPost.child("Price").setValue(price);
+
+                                mProgress.dismiss();
+                                Intent home_again = new Intent(PostActivity.this, HomeActivity.class);
+                                startActivity(home_again);
+                                Toast.makeText(PostActivity.this, "Successfully Uploaded...", Toast.LENGTH_LONG).show();
+
+                            }
+                        });
+                filepath.putFile(imageUri).addOnFailureListener((new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Intent homeintent = new Intent(PostActivity.this, HomeActivity.class);
+                        homeintent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        startActivity(homeintent);
+                        Toast.makeText(PostActivity.this, "Unable to Upload Files...", Toast.LENGTH_LONG).show();
+                    }
+                }));
+            } else if (category.equals("Clothes")) {
+                final String description_1 = company_name.getText().toString().trim();
+                final String description_2 = device_specification.getText().toString().trim();
+
+                mProgress.show();
+
+                StorageReference filepath = storageReference.child("Post_Images").child(imageUri.getLastPathSegment());
+
+                filepath.putFile(imageUri).
+                        addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                            @Override
+                            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                                Uri downloadUrl = taskSnapshot.getDownloadUrl();
+
+                                DatabaseReference newPost = databaseReference.child("Electronics").push();
+
+                                newPost.child("Title").setValue(title);
+                                newPost.child("Image").setValue(downloadUrl.toString());
+                                newPost.child("Category").setValue(category);
+                                newPost.child("Description_1").setValue(description_1);
+                                newPost.child("Description_2").setValue(description_2);
+                                newPost.child("Price").setValue(price);
+
+                                mProgress.dismiss();
+                                Intent home_again = new Intent(PostActivity.this, HomeActivity.class);
+                                startActivity(home_again);
+                                Toast.makeText(PostActivity.this, "Successfully Uploaded...", Toast.LENGTH_LONG).show();
+
+                            }
+                        });
+                filepath.putFile(imageUri).addOnFailureListener((new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Intent homeintent = new Intent(PostActivity.this, HomeActivity.class);
+                        homeintent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        startActivity(homeintent);
+                        Toast.makeText(PostActivity.this, "Unable to Upload Files...", Toast.LENGTH_LONG).show();
+                    }
+                }));
+
+            }
+
+            else if (category.equals("Bikes")) {
+                final String description_1 = company_name.getText().toString().trim();
+                final String description_2 = device_specification.getText().toString().trim();
+
+                mProgress.show();
+
+                StorageReference filepath = storageReference.child("Post_Images").child(imageUri.getLastPathSegment());
+
+                filepath.putFile(imageUri).
+                        addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                            @Override
+                            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                                Uri downloadUrl = taskSnapshot.getDownloadUrl();
+
+                                DatabaseReference newPost = databaseReference.child("Electronics").push();
+
+                                newPost.child("Title").setValue(title);
+                                newPost.child("Image").setValue(downloadUrl.toString());
+                                newPost.child("Category").setValue(category);
+                                newPost.child("Description_1").setValue(description_1);
+                                newPost.child("Description_2").setValue(description_2);
+                                newPost.child("Price").setValue(price);
+
+                                mProgress.dismiss();
+                                Intent home_again = new Intent(PostActivity.this, HomeActivity.class);
+                                startActivity(home_again);
+                                Toast.makeText(PostActivity.this, "Successfully Uploaded...", Toast.LENGTH_LONG).show();
+
+                            }
+                        });
+                filepath.putFile(imageUri).addOnFailureListener((new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Intent homeintent = new Intent(PostActivity.this, HomeActivity.class);
+                        homeintent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        startActivity(homeintent);
+                        Toast.makeText(PostActivity.this, "Unable to Upload Files...", Toast.LENGTH_LONG).show();
+                    }
+                }));
+
+            }
+
+            else if (category.equals("Books")) {
+                final String description_1 = company_name.getText().toString().trim();
+                final String description_2 = device_specification.getText().toString().trim();
+
+                mProgress.show();
+
+                StorageReference filepath = storageReference.child("Post_Images").child(imageUri.getLastPathSegment());
+
+                filepath.putFile(imageUri).
+                        addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                            @Override
+                            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                                Uri downloadUrl = taskSnapshot.getDownloadUrl();
+
+                                DatabaseReference newPost = databaseReference.child("Electronics").push();
+
+                                newPost.child("Title").setValue(title);
+                                newPost.child("Image").setValue(downloadUrl.toString());
+                                newPost.child("Category").setValue(category);
+                                newPost.child("Description_1").setValue(description_1);
+                                newPost.child("Description_2").setValue(description_2);
+                                newPost.child("Price").setValue(price);
+
+                                mProgress.dismiss();
+                                Intent home_again = new Intent(PostActivity.this, HomeActivity.class);
+                                startActivity(home_again);
+                                Toast.makeText(PostActivity.this, "Successfully Uploaded...", Toast.LENGTH_LONG).show();
+
+                            }
+                        });
+                filepath.putFile(imageUri).addOnFailureListener((new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Intent homeintent = new Intent(PostActivity.this, HomeActivity.class);
+                        homeintent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        startActivity(homeintent);
+                        Toast.makeText(PostActivity.this, "Unable to Upload Files...", Toast.LENGTH_LONG).show();
+                    }
+                }));
+
+            }
+
+            else if (category.equals("Miscellaneous")) {
+                final String description_1 = company_name.getText().toString().trim();
+                final String description_2 = device_specification.getText().toString().trim();
+
+                mProgress.show();
+
+                StorageReference filepath = storageReference.child("Post_Images").child(imageUri.getLastPathSegment());
+
+                filepath.putFile(imageUri).
+                        addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                            @Override
+                            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                                Uri downloadUrl = taskSnapshot.getDownloadUrl();
+
+                                DatabaseReference newPost = databaseReference.child("Electronics").push();
+
+                                newPost.child("Title").setValue(title);
+                                newPost.child("Image").setValue(downloadUrl.toString());
+                                newPost.child("Category").setValue(category);
+                                newPost.child("Description_1").setValue(description_1);
+                                newPost.child("Description_2").setValue(description_2);
+                                newPost.child("Price").setValue(price);
+
+                                mProgress.dismiss();
+                                Intent home_again = new Intent(PostActivity.this, HomeActivity.class);
+                                startActivity(home_again);
+                                Toast.makeText(PostActivity.this, "Successfully Uploaded...", Toast.LENGTH_LONG).show();
+
+                            }
+                        });
+                filepath.putFile(imageUri).addOnFailureListener((new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Intent homeintent = new Intent(PostActivity.this, HomeActivity.class);
+                        homeintent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        startActivity(homeintent);
+                        Toast.makeText(PostActivity.this, "Unable to Upload Files...", Toast.LENGTH_LONG).show();
+                    }
+                }));
+
+            }
+        }catch (Exception e){
+            Toast.makeText(PostActivity.this,e.getMessage(),Toast.LENGTH_LONG).show();
+            Log.e("Error:",e.getMessage());
+        }
+        finally {
+
+        }
+            /*if (!TextUtils.isEmpty(title) && !TextUtils.isEmpty(price) && !TextUtils.isEmpty(category) && imageUri != null) {
 
                 mProgress.show();
 
@@ -303,7 +515,7 @@ public class PostActivity extends AppCompatActivity {
         }
         finally {
 
-        }//NOT TO GO BACK
+        }//NOT TO GO BACK*/
     }
     @Override
     public void onBackPressed(){

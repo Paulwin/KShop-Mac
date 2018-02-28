@@ -210,20 +210,20 @@ public class HomeActivity extends AppCompatActivity
             final Intent electronic = new Intent(HomeActivity.this,ElectronicsActivity.class);
             startActivity(electronic);
         } else if (id == R.id.clothes) {
-            /*final Intent upload = new Intent(ClothesActivity.this,PostActivity.class);
-            startActivity(upload);*/
+            final Intent upload = new Intent(HomeActivity.this,ClothesActivity.class);
+            startActivity(upload);
 
         } else if (id == R.id.bike) {
-           /* final Intent upload = new Intent(BikesActivity.this,PostActivity.class);
-            startActivity(upload);*/
+            final Intent upload = new Intent(HomeActivity.this,BikesActivity.class);
+            startActivity(upload);
 
         } else if (id == R.id.book) {
-           /* final Intent upload = new Intent(BooksActivity.this,PostActivity.class);
-            startActivity(upload);*/
+            final Intent upload = new Intent(HomeActivity.this,BooksActivity.class);
+            startActivity(upload);
 
         } else if (id == R.id.my_profile) {
-            /*final Intent upload = new Intent(MiscellaneoussActivity.this,PostActivity.class);
-            startActivity(upload);*/
+            final Intent upload = new Intent(HomeActivity.this,MiscellaneousActivity.class);
+            startActivity(upload);
 
         } else if (id == R.id.upload) {
             if (mAuth.getCurrentUser() != null) {

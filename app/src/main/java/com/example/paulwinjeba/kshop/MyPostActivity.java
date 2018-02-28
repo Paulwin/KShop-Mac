@@ -37,7 +37,8 @@ public class MyPostActivity extends AppCompatActivity
 
     private RecyclerView MyPostList;
 
-    Button login,signin;
+    Button login,signin, edit,delete;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +47,9 @@ public class MyPostActivity extends AppCompatActivity
 
         databaseReference = FirebaseDatabase.getInstance().getReference().child("Post");
         mAuth = FirebaseAuth.getInstance();
+
+        edit = (Button) findViewById(R.id.edit);
+        delete = (Button) findViewById(R.id.delete);
 
         MyPostList = (RecyclerView) findViewById(R.id.my_post);
         MyPostList.setHasFixedSize(true);
@@ -94,12 +98,11 @@ public class MyPostActivity extends AppCompatActivity
     public static class MyBlogViewHolder extends RecyclerView.ViewHolder{
 
         View mView;
-        Button edit,delete;
 
         public MyBlogViewHolder(View itemView) {
             super(itemView);
             mView = itemView;
-            edit = (Button) findViewById(R.id.edit);
+
         }
 
         public void setTitle(String Title){
@@ -182,20 +185,20 @@ public class MyPostActivity extends AppCompatActivity
             final Intent electronic = new Intent(MyPostActivity.this,ElectronicsActivity.class);
             startActivity(electronic);
         } else if (id == R.id.clothes) {
-            /*final Intent upload = new Intent(ClothesActivity.this,PostActivity.class);
-            startActivity(upload);*/
+            final Intent upload = new Intent(MyPostActivity.this,ClothesActivity.class);
+            startActivity(upload);
 
         } else if (id == R.id.bike) {
-           /* final Intent upload = new Intent(BikesActivity.this,PostActivity.class);
-            startActivity(upload);*/
+            final Intent upload = new Intent(MyPostActivity.this,BikesActivity.class);
+            startActivity(upload);
 
         } else if (id == R.id.book) {
-           /* final Intent upload = new Intent(BooksActivity.this,PostActivity.class);
-            startActivity(upload);*/
+            final Intent upload = new Intent(MyPostActivity.this,BooksActivity.class);
+            startActivity(upload);
 
         } else if (id == R.id.my_profile) {
-            /*final Intent upload = new Intent(MiscellaneoussActivity.this,PostActivity.class);
-            startActivity(upload);*/
+            final Intent upload = new Intent(MyPostActivity.this,MiscellaneousActivity.class);
+            startActivity(upload);
 
         } else if (id == R.id.upload) {
             if (mAuth.getCurrentUser() != null) {
