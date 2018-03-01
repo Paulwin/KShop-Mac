@@ -35,15 +35,17 @@ public class PostActivity extends AppCompatActivity {
     boolean doubleBackToExitPressedOnce = false;
 
     TextView mstlabel;
-    TextInputLayout companyname,specific,specific_cloth,modelname,gear_deatils,noofgear,brakes_details,details_rims,bookname,authorname,bookdesc,desc;
-    EditText company_name,device_specification,specific_clothes,model_name,gear,noof_gear,brakes,rims,book_name,author_name,book_desc,description;
+    TextInputLayout companyname,specific,specific_cloth,modelname,gear_deatils,noofgear,brakes_details,details_rims,bookname,authorname,bookdesc,desc,desc_bike;
+    EditText company_name,device_specification,specific_clothes,model_name,gear,noof_gear,brakes,rims,book_name,author_name,book_desc,description,description_bike;
     LinearLayout case_2,case_3,case3_1;
     private ImageButton post_img;
     private EditText post_title, post_price;
     private Button post_btn;
     private Uri imageUri = null;
     private final int PICK_IMAGE_REQUEST = 7;
-    private String spinner_category;
+    private String spin_category;
+    private String desc_cloth_1,desc_cloth_2;
+
 
     private ProgressDialog mProgress;
 
@@ -86,7 +88,7 @@ public class PostActivity extends AppCompatActivity {
         author_name = (EditText) findViewById(R.id.auther_name);
         book_desc = (EditText) findViewById(R.id.book_desc);
         description = (EditText) findViewById(R.id.description);
-
+        description_bike = (EditText) findViewById(R.id.description_bike);
 
         companyname = (TextInputLayout) findViewById(R.id.companyname) ;
         specific = (TextInputLayout) findViewById(R.id.specific);
@@ -100,6 +102,7 @@ public class PostActivity extends AppCompatActivity {
         authorname = (TextInputLayout) findViewById(R.id.authername);
         bookdesc = (TextInputLayout) findViewById(R.id.bookdesc);
         desc = (TextInputLayout) findViewById(R.id.desc);
+        desc_bike = (TextInputLayout) findViewById(R.id.desc_bike);
 
         case_2 = (LinearLayout) findViewById(R.id.case_2);
         case_3 = (LinearLayout) findViewById(R.id.case_3);
@@ -122,12 +125,10 @@ public class PostActivity extends AppCompatActivity {
         categories.add("Books");
         categories.add("Bikes");
         categories.add("Miscellaneous");
-
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, categories);
-
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-
         spinner_category.setAdapter(adapter);
+        spin_category = spinner_category.getSelectedItem().toString();
 
         Spinner spinner_clothes = (Spinner) findViewById(R.id.spinner_clothes);
 // Create an ArrayAdapter using the string array and a default spinner layout
@@ -147,6 +148,8 @@ public class PostActivity extends AppCompatActivity {
 // Apply the adapter to the spinner
         spinner_size.setAdapter(adapter_size);
 
+        desc_cloth_1 = spinner_size.getSelectedItem().toString();
+        desc_cloth_2 = spinner_clothes.getSelectedItem().toString();
 
         spinner_category.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -184,6 +187,7 @@ public class PostActivity extends AppCompatActivity {
                         modelname.setVisibility(View.VISIBLE);
                         case_3.setVisibility(View.VISIBLE);
                         case3_1.setVisibility(View.VISIBLE);
+                        desc_bike.setVisibility(View.VISIBLE);
                         break;
 
                     case 4:
@@ -256,7 +260,7 @@ public class PostActivity extends AppCompatActivity {
 
             final String title = post_title.getText().toString().trim();
             final String price = post_price.getText().toString().trim();
-            final String category = spinner_category;
+            final String category = spin_category;
 
             if (category.equals("Electronics")) {
                 final String description_1 = company_name.getText().toString().trim();
@@ -297,9 +301,11 @@ public class PostActivity extends AppCompatActivity {
                         Toast.makeText(PostActivity.this, "Unable to Upload Files...", Toast.LENGTH_LONG).show();
                     }
                 }));
-            } else if (category.equals("Clothes")) {
-                final String description_1 = company_name.getText().toString().trim();
-                final String description_2 = device_specification.getText().toString().trim();
+            }
+
+            else if (category.equals("Clothes")) {
+                final String description_1 = "Material : " +desc_cloth_2+ " Size : " + desc_cloth_1;
+                final String description_2 = specific_clothes.getText().toString().trim();
 
                 mProgress.show();
 
@@ -311,7 +317,7 @@ public class PostActivity extends AppCompatActivity {
                             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                                 Uri downloadUrl = taskSnapshot.getDownloadUrl();
 
-                                DatabaseReference newPost = databaseReference.child("Electronics").push();
+                                DatabaseReference newPost = databaseReference.child("Clothes").push();
 
                                 newPost.child("Title").setValue(title);
                                 newPost.child("Image").setValue(downloadUrl.toString());
@@ -340,8 +346,11 @@ public class PostActivity extends AppCompatActivity {
             }
 
             else if (category.equals("Bikes")) {
-                final String description_1 = company_name.getText().toString().trim();
-                final String description_2 = device_specification.getText().toString().trim();
+                String desc_model = model_name.getText().toString().trim();
+                String desc_gear = gear.getText().toString().trim();
+                String nogear = noof_gear
+                final String description_1 = .getText().toString().trim();
+                final String description_2 = description_bike.getText().toString().trim();
 
                 mProgress.show();
 
@@ -353,7 +362,7 @@ public class PostActivity extends AppCompatActivity {
                             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                                 Uri downloadUrl = taskSnapshot.getDownloadUrl();
 
-                                DatabaseReference newPost = databaseReference.child("Electronics").push();
+                                DatabaseReference newPost = databaseReference.child("Bikes").push();
 
                                 newPost.child("Title").setValue(title);
                                 newPost.child("Image").setValue(downloadUrl.toString());
